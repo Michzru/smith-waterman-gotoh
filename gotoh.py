@@ -73,12 +73,6 @@ PAM250 = {
 "V":{"A":0,"R":-2,"N":-2,"D":-2,"C":-2,"Q":-2,"E":-2,"G":-1,"H":-2,"I":4,"L":2,"K":-2,"M":2,"F":-1,"P":-1,"S":-1,"T":0,"W":-6,"Y":-2,"V":4}
 }
 
-# gap extend
-u = -1
-
-# gap open
-v = -10
-
 parser = argparse.ArgumentParser(
     description="Smith-Waterman local alignment for DNA or protein sequences"
 )
@@ -95,6 +89,20 @@ parser.add_argument(
     choices=["EDNAMAT", "EDNAFULL", "BLOSUM62", "PMA250"],
     required=True,
     help="Substitution matrix (EDNAMAT, EDNAFULL, BLOSUM62, PMA250)"
+)
+
+parser.add_argument(
+    "-go", "--gap_open",
+    type=float,
+    required=True,
+    help="Value of gap open penalization"
+)
+
+parser.add_argument(
+    "-ge", "--gap_extend",
+    type=float,
+    required=True,
+    help="Value of gap extend penalization"
 )
 
 parser.add_argument(
@@ -118,6 +126,8 @@ name2 = Path(sequence_2_path).stem
 output_filename = f"outputs/{name1}_{name2}_alignment.txt"
 file_path = Path(output_filename)
 file_path.parent.mkdir(parents=True, exist_ok=True)
+u = -abs(args.gap_extend)
+v = -abs(args.gap_open)
 
 matrix_cost = None
 

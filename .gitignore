@@ -4,5 +4,4 @@ env/
 smith/
 __pycache__/
 *.py[cod]
-/data
 /outputs
